@@ -76,6 +76,14 @@ TEST_CASE("Good inputs- check the outputs") {
 
 }
 
+
+
+        //  HHHHH
+        //  HHHHH
+        // X(LNR)Y
+        // X(TTT)Y
+        //  (BBB)
+
 TEST_CASE("Bad inputs- look for exceptions") {
     CHECK_THROWS(snowman(555));
     CHECK_THROWS(snowman(55543453));
