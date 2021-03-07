@@ -15,9 +15,10 @@ const int minSnowman = 11111111;
 const int maxSnowman = 55555555;
 using namespace std;
 
-
-
-string snowmanBody[snowmanLen] = {" ", " ", " ", " ", " ", " ", " ", " "};
+int count_digits(int number);
+void check_each_digit(int number);
+void collect_snowman_parts(int number);
+void remove_newline(std::string s);
 
 namespace ariel
 {
@@ -54,17 +55,19 @@ namespace ariel
         }
     }
 
-    void collect_snowman_parts(int number) //collects the chosen snowman's body parts
+    void collect_snowman_parts(int number, string snowmanBody[]) //collects the chosen snowman's body parts
     {
         string snowmanBodyParts[snowmanLen][four] = {
-        {" _===_", "  ___\n.....", "   _\n  /_\\ ", " ___\n (_*_)"},
+        {" _===_", "  ___\n .....", "   _\n  /_\\ ", "  ___\n (_*_)"},
         {",", ".", "_", " "},
         {".", "o", "O", "-"},
         {".", "o", "O", "-"},
         {"\n<", "\\", "\n/", " "},
-        {"\n>", "/", "\n\"", " "},
+        {"\n>", "/", "\n\\", " "},
         {" : ", "] [", "> <", "   "},
-        {" : ", "" "", "___", "   "}} ;
+        {" : ", "\" \"", "___", "   "}} ;
+
+
         //       std::cout << "NUM IS " << number << '\n'; //to print
         int digit = 0;
         int whichFeature = nine;
@@ -106,7 +109,8 @@ namespace ariel
                                   //    string snowman="";
 
         //reaching here means the input is valid. so, let's start printing the snowman!
-        collect_snowman_parts(number);
+        string snowmanBody[snowmanLen] = {" ", " ", " ", " ", " ", " ", " ", " "};
+        collect_snowman_parts( number, snowmanBody);
         string H = snowmanBody[0];     //Hat
         string N = snowmanBody[1];     //Nose/mouth
         string L = snowmanBody[2];     //Left eye
@@ -116,34 +120,29 @@ namespace ariel
         string T = snowmanBody[six];   //Torso
         string B = snowmanBody[seven]; //Base
 
-        std::cout << "H IS " << H << "\n"; //to print
-        std::cout << "N IS " << N << "\n"; //to print
-        std::cout << "L IS " << L << "\n"; //to print
-        std::cout << "R IS " << R << "\n"; //to print
-        std::cout << "X IS " << X << "\n"; //to print
-        std::cout << "Y IS " << Y << "\n"; //to print
-        std::cout << "T IS " << T << "\n"; //to printmk
-        std::cout << "B IS " << B << "\n"; //to print
+        // std::cout << "H IS " << H << "\n"; //to print
+        // std::cout << "N IS " << N << "\n"; //to print
+        // std::cout << "L IS " << L << "\n"; //to print
+        // std::cout << "R IS " << R << "\n"; //to print
+        // std::cout << "X IS " << X << "\n"; //to print
+        // std::cout << "Y IS " << Y << "\n"; //to print
+        // std::cout << "T IS " << T << "\n"; //to print
+        // std::cout << "B IS " << B << "\n"; //to print
 
+        if(X== " "){ //fixing special cases spaces.
+            X= "  ";
+        }
+        if(Y == " "){ //fixing special cases spaces.
+            Y= "  ";
+        }
         string snowman = " ";
         if (X.find('\n') != std::string::npos)
         { //if you can find '\n' in this string. the difference in the hands (X&Y)
-            for (int i = 0; i < X.length(); i++)
-            {
-                if (X[i] == '\n')
-                {
-                    X.erase(0, i);
-                }
-            }
+                    X.erase(0, 1);
             if (Y.find('\n') != std::string::npos)
             {
-                for (int i = 0; i < Y.length(); i++)
-                {
-                    if (Y[i] == '\n')
-                    {
-                        Y.erase(0, i);
-                    }
-                }
+                Y.erase(0, 1);
+                //  std::cout << "Y IS " << Y << "\n"; //to print
                 snowman = H + "\n"  + " (" + L + N + R + ")" + "\n" + X + "(" + T + ")" + Y + "\n" + " (" + B + ")"; //cuz X contains \n and than goes down, and also Y
             }
             else
@@ -154,19 +153,16 @@ namespace ariel
         else
         {
             if (Y.find('\n') != std::string::npos)
-            {
-                for (int i = 0; i < Y.length(); i++)
-                {
-                    if (Y[i] == '\n')
-                    {
-                        Y.erase(0, i);
-                    }
-                }
-                snowman = H + "\n" + X + "(" + L + N + R + ")" + "\n" + "(" + T + ")" + Y + "\n" + " (" + B + ")"; //cuz Y contains \n and than goes down, and X doesn't
+            {      
+                Y.erase(0, 1);
+                snowman = H + "\n" + X + "(" + L + N + R + ")" + "\n" + " (" + T + ")" + Y + "\n" + " (" + B + ")"; //cuz Y contains \n and than goes down, and X doesn't
             }
             else
             {
-                snowman = H + "\n" + X + "(" + L + N + R + ")" + Y + "\n" + "(" + T + ")" + "\n" + " (" + B + ")"; //cuz X doesn't contain \n and so does Y
+                if(X== "  "){
+                    X=" ";
+                }
+                snowman = H + "\n" + X + "(" + L + N + R + ")" + Y + "\n" + " (" + T + ")" + "\n" + " (" + B + ")"; //cuz X doesn't contain \n and so does Y
             }
         }
         //string realsnowman= H+"\n"+XS+"("+L+N+R+")"+YS+XS+"("+T+")"+YS+"("+B+")";
